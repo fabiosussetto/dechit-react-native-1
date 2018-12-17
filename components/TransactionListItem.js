@@ -11,10 +11,11 @@ const TransactionListItem =  ({ transaction }) => {
     return (
         <View style={styles.listItem}>
             <View style={styles.title}>
-                <Text style={styles.text}>{transaction.title}</Text>
+                <Text style={styles.text}>{transaction.category}</Text>
+                <Text style={styles.text}>{transaction.amount}</Text>
             </View>
             <View style={styles.amount}>
-                <Text style={styles.text}>{transaction.amount}</Text>
+                
             </View>
         </View>
     )

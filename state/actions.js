@@ -6,7 +6,8 @@ export function setFilterAmount (amount) {
 
 export function fetchTransactions() {
     return (dispatch, getState) => {
-        axios.get('https://my.api.mockaroo.com/transactions?key=f02d0440')
+        //axios.get('https://my.api.mockaroo.com/transactions?key=f02d0440')
+        axios.get('http://www.martapetrella.com/dechit-corso.json')
             .then((resp) => {
                 dispatch({
                     type: 'SET_TRANSACTIONS',
