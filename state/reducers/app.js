@@ -1,23 +1,34 @@
 import transactions from './transactions'
 import filters from './filters'
+import categories from './categories'
+//* importo il nuovo reducer
+import card from './card'
 
 const initialState = {
+    currency: "€",
+    categories: {
+      list: []
+    },
     transactions: {
         loading: true,
-        list: [
-            // { id: 1, amount: 20, title: 'Test transaction' },
-            // { id: 2, amount: 50, title: 'Another one' }
-        ]
+        list: []
     },
     filters: {
-        amount: 0
-    }
+        amount: 0,
+        sortBy: 'id',
+        sortDir: 'ASC'
+    },
+    expandedTransactionIds: {
+      ids: []
+    },
 }
-
 
 export default function app(state = initialState, action) {
     return {
+        currency: state.currency,
+        categories: categories(state.categories, action),
         transactions: transactions(state.transactions, action),
         filters: filters(state.filters, action),
+        expandedTransactionIds: card(state.expandedTransactionIds, action),
     }
 }

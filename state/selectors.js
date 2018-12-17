@@ -1,5 +1,5 @@
 
-export function getFilteredTransactions (state) {
+export function getVisibleTransactions (state) {
     const transactions = state.transactions.list
     const filterAmount = state.filters.amount
 

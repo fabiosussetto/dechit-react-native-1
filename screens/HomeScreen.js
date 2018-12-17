@@ -13,10 +13,11 @@ import { WebBrowser } from 'expo';
 import { connect } from "react-redux";
 
 import { fetchTransactions } from '../state/actions'
-import { getFilteredTransactions } from '../state/selectors'
+import { getVisibleTransactions } from '../state/selectors'
 
 import { MonoText } from '../components/StyledText';
-import TransactionListItem from '../components/TransactionListItem'
+import TransactionFilter from '../components/TransactionFilter'
+import TransactionList from '../components/TransactionList'
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -27,15 +28,25 @@ class HomeScreen extends React.Component {
     this.props.dispatch(fetchTransactions())
   }
 
+  toggleCardExpanded = (transaction) => {
+    this.props.dispatch({
+      type: 'TOGGLE_CARD',
+      payload: {transaction: transaction}
+    });
+  }
+
   render() {
-    const { transactions, loading } = this.props
+    const callbacks = {
+      toggleCardExpanded: this.toggleCardExpanded
+    }
 
     return (
       <View style={styles.container}>
+        <View>
+          <TransactionFilter />
+        </View>
         <ScrollView style={styles.scrollView} contentContainerStyle={styles.contentContainer}>
-          {transactions.map(transaction => (
-            <TransactionListItem transaction={transaction} key={transaction.id} />
-          ))}
+          <TransactionList callbacks={callbacks} />
         </ScrollView>
       </View>
     );
@@ -44,7 +55,7 @@ class HomeScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    transactions: getFilteredTransactions(state),
+    transactions: getVisibleTransactions(state),
     loading: state.transactions.loading
   }
 }
@@ -52,100 +63,17 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps)(HomeScreen);
 
 const styles = StyleSheet.create({
-  loading: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: 30
-  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
   },
   scrollView: {
     flex: 1,
-    paddingTop: 30,
+    paddingTop: 0,
     backgroundColor: '#fff',
-  },  
+  },
   contentContainer: {
-    padding: 20,
+    padding: 0,
     backgroundColor: '#fff',
-  },
-  listItem: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd'
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
   },
 });
