@@ -45,11 +45,13 @@ class TransactionList extends React.Component {
                         title="Add"
                         buttonStyle={styles.buttonAddTransaction}
                     />
-                    <Button
-                        onPress={callbacks.onClearTransactions}
-                        title="Remove all"
-                        buttonStyle={styles.buttonRemoveAll}
-                    />
+                    <View style={styles.mleftauto}>
+                        <Button
+                            onPress={callbacks.onClearTransactions}
+                            title="Remove all"
+                            buttonStyle={styles.buttonRemoveAll}
+                        />
+                    </View>
                 </View>
             </View>
         )
@@ -64,20 +66,19 @@ const mapStateToProps = (state) => {
     return {
       transactions: getFilteredTransactions(state)
     }
-  }
+}
   
 export default connect(mapStateToProps)(TransactionList);
 
 const button = StyleSheet.create({
     width: 100,
     height: 5,
-    marginVertical: 5,
-    marginHorizontal: -10,
-})
+    marginVertical: 10,
+    marginBottom: 20
+});
 
 const styles = StyleSheet.create({
     listItem: {
-      padding: 10,
       justifyContent: 'center',
       alignContent: 'center'
     },
@@ -92,5 +93,8 @@ const styles = StyleSheet.create({
     flex: {
         flex: 1,
         flexDirection: 'row'
+    },
+    mleftauto: {
+        marginLeft: 'auto'
     }
-  });
+});
