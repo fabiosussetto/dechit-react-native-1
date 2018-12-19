@@ -36,6 +36,10 @@ class HomeScreen extends React.Component {
     this.props.dispatch(actions.expandedTransactionIds(updatedIds))
   }
 
+  clearTransactions = () => {
+    this.props.dispatch(actions.clearTransactions());
+  }
+
   incrementAmount = (transactionId) => {
     const { transactions } = this.props
     
@@ -59,6 +63,7 @@ class HomeScreen extends React.Component {
     const callbacks = {
       onIncrementAmount: this.incrementAmount,
       onRemoveTransaction: this.removeTransaction,
+      onClearTransactions: this.clearTransactions,
       toggleCardExpanded: this.toggleCardExpanded
     }
 

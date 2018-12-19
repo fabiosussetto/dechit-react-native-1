@@ -52,8 +52,9 @@ const button = StyleSheet.create({
 const styles = StyleSheet.create({
     listItem: {
       padding: 10,
-      borderBottomWidth: 1,
-      borderBottomColor: '#ddd',
+      margin: 5,
+      borderWidth: 1,
+      borderColor: '#ddd',
       justifyContent: 'center',
       alignContent: 'center'
     },

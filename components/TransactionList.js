@@ -3,6 +3,7 @@ import {
     View,
     StyleSheet
   } from 'react-native';
+import {Button} from 'react-native-elements';
 import { getFilteredTransactions } from '../state/selectors'
 import { connect } from "react-redux";
 import TransactionCard from './TransactionCard'
@@ -30,7 +31,16 @@ class TransactionList extends React.Component {
 
         return (
             <View style={styles.listItem}>
-                {listElements}
+                <View>
+                    {listElements}
+                </View>
+                <View>
+                    <Button
+                        onPress={callbacks.onClearTransactions}
+                        title="Remove all"
+                        buttonStyle={styles.buttonRemoveAll}
+                    />
+                </View>
             </View>
         )
     }
@@ -48,11 +58,21 @@ const mapStateToProps = (state) => {
   
 export default connect(mapStateToProps)(TransactionList);
 
+const button = StyleSheet.create({
+    width: 100,
+    height: 5,
+    marginVertical: 5
+})
+
 const styles = StyleSheet.create({
     listItem: {
       padding: 10,
       borderBottomColor: '#ddd',
       justifyContent: 'center',
       alignContent: 'center'
+    },
+    buttonRemoveAll: {
+        ...button,
+        backgroundColor: '#6c757d'
     }
   });
