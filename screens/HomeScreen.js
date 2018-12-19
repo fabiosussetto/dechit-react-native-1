@@ -8,6 +8,7 @@ import {
 import { connect } from "react-redux";
 import * as actions from '../state/actions';
 import TransactionList from '../components/TransactionList';
+import TransactionFilter from '../components/TransactionFilter';
 import { getFilteredTransactions } from '../state/selectors';
 
 class HomeScreen extends React.Component {
@@ -36,6 +37,20 @@ class HomeScreen extends React.Component {
     this.props.dispatch(actions.expandedTransactionIds(updatedIds))
   }
 
+  allToggleCardExpanded = () => {
+    const {transactions, expandedTransactionIds} = this.props
+    
+    if(expandedTransactionIds.length < transactions.length) {
+      const transactionsIds = transactions.map(transaction => transaction.id)
+      this.props.dispatch(actions.expandedTransactionIds(transactionsIds))
+
+      return
+    }
+    
+    const removeTransactionsIds = []
+    this.props.dispatch(actions.expandedTransactionIds(removeTransactionsIds))
+  }
+
   clearTransactions = () => {
     this.props.dispatch(actions.clearTransactions());
   }
@@ -58,19 +73,21 @@ class HomeScreen extends React.Component {
   }
 
   render() {
-    const { expandedTransactionIds } = this.props
+    const { transactions, expandedTransactionIds } = this.props
 
     const callbacks = {
       onIncrementAmount: this.incrementAmount,
       onRemoveTransaction: this.removeTransaction,
       onClearTransactions: this.clearTransactions,
-      toggleCardExpanded: this.toggleCardExpanded
+      toggleCardExpanded: this.toggleCardExpanded,
+      allToggleCardExpanded: this.allToggleCardExpanded
     }
 
     return (
       <View style={styles.container}>
         <ScrollView style={styles.scrollView} contentContainerStyle={styles.contentContainer}>
-            <TransactionList expandedIds={expandedTransactionIds} callbacks={callbacks} />
+          <TransactionFilter callbacks={callbacks} expandedIds={expandedTransactionIds} transactions={transactions} />
+          <TransactionList expandedIds={expandedTransactionIds} callbacks={callbacks} />
         </ScrollView>
       </View>
     );
