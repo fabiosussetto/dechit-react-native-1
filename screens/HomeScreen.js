@@ -47,11 +47,18 @@ class HomeScreen extends React.Component {
     this.props.dispatch(actions.incrementAmount(newTransactions));
   }
 
+  removeTransaction = (transactionId) => {
+    const { transactions } = this.props
+    const newTransactions = transactions.filter(transaction => transaction.id!==transactionId);
+    this.props.dispatch(actions.removeTransaction(newTransactions));
+  }
+
   render() {
     const { expandedTransactionIds } = this.props
 
     const callbacks = {
       onIncrementAmount: this.incrementAmount,
+      onRemoveTransaction: this.removeTransaction,
       toggleCardExpanded: this.toggleCardExpanded
     }
 

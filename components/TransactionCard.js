@@ -8,7 +8,7 @@ import {Button} from 'react-native-elements';
 import ExpandCollapse from './ExpandCollapse';
 
 const TransactionCard = (props) => {
-    const { transaction, onIncrementAmount, expanded, onToggleExpand } = props
+    const { transaction, onRemoveTransaction, onIncrementAmount, expanded, onToggleExpand } = props
 
     return (
         <View style={styles.listItem}>
@@ -28,6 +28,11 @@ const TransactionCard = (props) => {
                         title={expanded ? 'Collapse' : 'Expand'}
                         buttonStyle={styles.buttonExpand}
                     />
+                    <Button
+                        onPress={onRemoveTransaction}
+                        title="Remove"
+                        buttonStyle={styles.buttonRemove}
+                    />
                 </View>
             </View>
             
@@ -37,6 +42,12 @@ const TransactionCard = (props) => {
 }
 
 export default TransactionCard
+
+const button = StyleSheet.create({
+    width: 80,
+    height: 5,
+    marginVertical: 5
+})
 
 const styles = StyleSheet.create({
     listItem: {
@@ -49,17 +60,17 @@ const styles = StyleSheet.create({
     amount: {
         marginVertical: 5
     },
-    buttonExpand: {
-        width: 80,
-        height: 5,
-        backgroundColor: '#6c757d',
-        marginVertical: 5
-    },
     buttonAdd: {
-        width: 80,
-        height: 5,
-        backgroundColor: '#1e7e34',
-        marginVertical: 5
+        ...button,
+        backgroundColor: '#1e7e34'
+    },
+    buttonExpand: {
+        ...button,
+        backgroundColor: '#6c757d'
+    },
+    buttonRemove: {
+        ...button,
+        backgroundColor: '#bd2130'
     },
     buttonPosition: {
         marginLeft: 'auto'
