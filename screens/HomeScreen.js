@@ -1,41 +1,51 @@
 import React from 'react';
 import {
-  Image,
   Platform,
   ScrollView,
   StyleSheet,
-  Picker,
-  Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
-import { WebBrowser } from 'expo';
 import { connect } from "react-redux";
-
-import { fetchTransactions } from '../state/actions'
-import { getFilteredTransactions } from '../state/selectors'
-
-import { MonoText } from '../components/StyledText';
-import TransactionListItem from '../components/TransactionListItem'
+import * as actions from '../state/actions'
+import TransactionList from '../components/TransactionList'
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
 
-  componentDidMount () {
-    this.props.dispatch(fetchTransactions())
+  componentDidMount() {
+    this.props.dispatch(actions.fetchTransactions())
+  }
+
+  toggleCardExpanded = (transaction) => {
+    const {expandedTransactionIds} = this.props
+    const index = expandedTransactionIds.indexOf(transaction.id)
+
+    if(index === -1) {
+      const newExpandedTransactionIds = [...expandedTransactionIds, transaction.id]
+      this.props.dispatch(actions.expandedTransactionIds(newExpandedTransactionIds))
+    
+      return
+    }
+
+    const updatedIds = [...expandedTransactionIds]
+    updatedIds.splice(index, 1)
+
+    this.props.dispatch(actions.expandedTransactionIds(updatedIds))
   }
 
   render() {
-    const { transactions, loading } = this.props
+    const { expandedTransactionIds } = this.props
+
+    const callbacks = {
+      toggleCardExpanded: this.toggleCardExpanded
+    }
 
     return (
       <View style={styles.container}>
         <ScrollView style={styles.scrollView} contentContainerStyle={styles.contentContainer}>
-          {transactions.map(transaction => (
-            <TransactionListItem transaction={transaction} key={transaction.id} />
-          ))}
+            <TransactionList expandedIds={expandedTransactionIds} callbacks={callbacks} />
         </ScrollView>
       </View>
     );
@@ -44,8 +54,7 @@ class HomeScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    transactions: getFilteredTransactions(state),
-    loading: state.transactions.loading
+    expandedTransactionIds: state.expandedTransactionIds.listIds
   }
 }
 
