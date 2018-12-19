@@ -1,13 +1,21 @@
 import React from 'react';
 import {
     Text,
-    Button,
-    TouchableOpacity,
+    TouchableHighlight,
     View,
     StyleSheet,
+    ThemeProvider,
   } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import PropTypes from 'prop-types';
+
+// elementi custom (NOTE: Button lo uso da qui e non da react-native)
+import Btn from './Btn'
+
+
+// stile condiviso
+import {LayoutStyle, BtnStyle, BtnStyleDanger, BtnStyleSuccess} from '../stylesheets/styles';
+import { Sizes } from '../constants/Theme';
 
 const TransactionListItem =  (props) => {
 
@@ -20,24 +28,26 @@ const TransactionListItem =  (props) => {
           currency,
           childKey } = props
 
-    const colorRow = (childKey%2 === 0) ? 'colorRow1' : 'colorRow2'
+    const bkgElem = (childKey%2 === 0) ? 'evenRow' : 'oddRow'
+    const expandStatusLabel = ( expanded ? 'Hide' : 'Show' )
 
     return (
-        <View style={[styles.listItem,styles[colorRow]]}>
-            <View style={styles.title}>
-                <Text style={styles.text}>{transaction.category} *{childKey}</Text>
+        <View style={[LayoutStyle[bkgElem],s.listItem]}>
+            <View style={LayoutStyle.rowContainer}>
+              <Text style={s.title}>{transaction.category}</Text>
             </View>
-            <View style={styles.amount}>
-                <Text style={styles.text}>{transaction.amount}</Text>
-            </View>
-            <View>
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity onPress={onToggleExpand} style={styles.button}>
-                  <Text style={styles.buttonText}>{( expanded ? 'Hide' : 'Show' ) + ' description'}</Text>
-                </TouchableOpacity>
+            <View style={LayoutStyle.rowContainer}>
+              <View style={[BtnStyle.container,s.btnContainer]}>
+                <Btn onPress={onToggleExpand} style={[BtnStyleSuccess.box,s.btnExpand]} >{expandStatusLabel}</Btn>
+                <View style={[BtnStyle.container]}>
+                  <Btn onPress={onDecrementAmount} style={BtnStyle.box} >-</Btn>
+                  <Text style={s.amount}>{transaction.amount}</Text>
+                  <Btn onPress={onIncrementAmount} style={BtnStyle.box} >+</Btn>
+                </View>
+                <Btn onPress={onRemoveTransacion} style={BtnStyleDanger.box} >X</Btn>
               </View>
               <View>
-                {expanded && <Text style={[styles.text,styles.description]}>{transaction.description}</Text> }
+                {expanded && <Text style={[s.description]}>{transaction.description}</Text> }
               </View>
             </View>
         </View>
@@ -52,44 +62,29 @@ TransactionListItem.propTypes = {
 
 export default TransactionListItem
 
-const styles = StyleSheet.create({
+const s = StyleSheet.create({
     listItem: {
-      padding: 10,
-      justifyContent: 'center',
-      alignItems: 'center',
-      alignContent: 'center'
-    },
-    colorRow1: {
-      backgroundColor: '#eee'
-    },
-    colorRow2: {
-      backgroundColor: '#fff'
+      padding: Sizes.gap.default,
     },
     title: {
-        justifyContent: 'center',
-    },
-    text: {
-        justifyContent: 'center',
+      paddingBottom: Sizes.gap.default,
+      fontSize: Sizes.font.big,
+      fontWeight: '700',
     },
     description: {
-        paddingTop: 10,
+        paddingTop: Sizes.gap.default,
     },
     amount: {
-        marginLeft: 'auto',
-        justifyContent: 'center'
+      paddingLeft: Sizes.gap.small,
+      paddingRight: Sizes.gap.small,
+      minWidth: 35,
+      textAlign: 'center'
     },
-    buttonContainer: {
-      alignItems:'center',
-      color: '#fff'
+    btnContainer: {
+      //justifyContent: 'flex-end'
+      justifyContent: 'space-between'
     },
-    button: {
-      padding: 5,
-      backgroundColor: 'gray',
-      justifyContent: 'center',
-      alignContent: 'center',
-      textAlign: 'center',
-    },
-    buttonText: {
-      color: '#fff'
+    btnExpand: {
+      minWidth: 70
     }
   });
