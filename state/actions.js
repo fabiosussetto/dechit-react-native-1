@@ -72,7 +72,6 @@ export function incrementAmount(transactionId) {
 }
 
 export function decrementAmount(transactionId) {
-
   return (dispatch, getState) => {
     const state = getState()
     const transactions = state.transactions.list

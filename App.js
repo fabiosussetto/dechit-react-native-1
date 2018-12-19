@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from "react-redux";
 import {
   Platform,
   StatusBar,
@@ -9,10 +10,10 @@ import {
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import { Provider } from "react-redux";
 import AppNavigator from './navigation/AppNavigator';
+//import { fetchTransactions, fetchCategoriesList } from './state/actions'
 import {store} from './state/store'
 
-
-export default class App extends React.Component {
+class App extends React.Component {
   state = {
     isLoadingComplete: false,
   };
@@ -65,6 +66,11 @@ export default class App extends React.Component {
     this.setState({ isLoadingComplete: true });
   };
 }
+
+//const ConnectedApp = connect()(App)
+//export default ConnectedApp
+export default App
+
 
 const styles = StyleSheet.create({
   container: {

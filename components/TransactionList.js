@@ -9,8 +9,14 @@ import { connect } from "react-redux";
 import TransactionListItem from './TransactionListItem'
 import { incrementAmount, decrementAmount, removeTransacion, editTransaction } from '../state/actions'
 import { getVisibleTransactions } from '../state/selectors'
+import { fetchTransactions, fetchCategoriesList } from '../state/actions'
 
 class TransactionList extends Component {
+
+  componentDidMount () {
+    this.props.dispatch(fetchTransactions())
+    this.props.dispatch(fetchCategoriesList())
+  }
 
   isCardExpanded = (transaction,expandedIds) => {
     //* indica se la transazione passata esiste o no nell'array di quelle espanse.

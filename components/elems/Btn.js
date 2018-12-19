@@ -9,8 +9,8 @@ import {
 
 import PropTypes from 'prop-types';
 
-import {LayoutStyle, BtnStyle, BtnStyleDanger} from '../stylesheets/styles';
-import { Sizes } from '../constants/Theme';
+import {LayoutStyle, BtnStyle, BtnStyleDanger} from '../../stylesheets/styles';
+import { Sizes } from '../../constants/Theme';
 
 // TODO far prendere anche stile Text
 

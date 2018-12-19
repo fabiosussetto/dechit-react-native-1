@@ -12,20 +12,16 @@ import {
 import { WebBrowser } from 'expo';
 import { connect } from "react-redux";
 
+import { fetchTransactions } from '../state/actions'
 import { getVisibleTransactions } from '../state/selectors'
 
 import { MonoText } from '../components/StyledText';
 import TransactionFilter from '../components/TransactionFilter'
-import TransactionList from '../components/TransactionList'
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
-
-  // componentDidMount () {
-  //   this.props.dispatch(fetchTransactions())
-  // }
 
   toggleCardExpanded = (transaction) => {
     this.props.dispatch({
@@ -45,7 +41,7 @@ class HomeScreen extends React.Component {
           <TransactionFilter />
         </View>
         <ScrollView style={styles.scrollView} contentContainerStyle={styles.contentContainer}>
-          <TransactionList callbacks={callbacks} />
+          <Text>Add form here</Text>
         </ScrollView>
       </View>
     );

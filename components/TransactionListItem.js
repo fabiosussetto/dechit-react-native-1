@@ -6,11 +6,10 @@ import {
     StyleSheet,
     ThemeProvider,
   } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import PropTypes from 'prop-types';
 
 // elementi custom (NOTE: Button lo uso da qui e non da react-native)
-import Btn from './Btn'
+import Btn from './elems/Btn'
 
 
 // stile condiviso
