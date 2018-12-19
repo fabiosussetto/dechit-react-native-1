@@ -4,15 +4,20 @@ import {
     StyleSheet
   } from 'react-native';
 import {Button} from 'react-native-elements';
-import { getFilteredTransactions } from '../state/selectors'
+import * as actions from '../state/actions';
+import { getFilteredTransactions } from '../state/selectors';
 import { connect } from "react-redux";
-import TransactionCard from './TransactionCard'
+import TransactionCard from './TransactionCard';
 
 class TransactionList extends React.Component {
 
     isCardExpanded = (transaction) => {
         const { expandedIds } = this.props
         return expandedIds.indexOf(transaction.id) > -1
+    }
+    
+    onAdd = () => {
+        this.props.dispatch(actions.addTransaction())
     }
 
     render() {
@@ -34,7 +39,12 @@ class TransactionList extends React.Component {
                 <View>
                     {listElements}
                 </View>
-                <View>
+                <View style={styles.flex}>
+                    <Button
+                        onPress={this.onAdd}
+                        title="Add"
+                        buttonStyle={styles.buttonAddTransaction}
+                    />
                     <Button
                         onPress={callbacks.onClearTransactions}
                         title="Remove all"
@@ -61,7 +71,8 @@ export default connect(mapStateToProps)(TransactionList);
 const button = StyleSheet.create({
     width: 100,
     height: 5,
-    marginVertical: 5
+    marginVertical: 5,
+    marginHorizontal: -10,
 })
 
 const styles = StyleSheet.create({
@@ -71,8 +82,16 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignContent: 'center'
     },
+    buttonAddTransaction: {
+        ...button,
+        backgroundColor: '#007bff'
+    },
     buttonRemoveAll: {
         ...button,
         backgroundColor: '#6c757d'
+    },
+    flex: {
+        flex: 1,
+        flexDirection: 'row'
     }
   });
