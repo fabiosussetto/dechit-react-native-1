@@ -6,8 +6,9 @@ import {
   View,
 } from 'react-native';
 import { connect } from "react-redux";
-import * as actions from '../state/actions'
-import TransactionList from '../components/TransactionList'
+import * as actions from '../state/actions';
+import TransactionList from '../components/TransactionList';
+import { getFilteredTransactions } from '../state/selectors';
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -35,10 +36,22 @@ class HomeScreen extends React.Component {
     this.props.dispatch(actions.expandedTransactionIds(updatedIds))
   }
 
+  incrementAmount = (transactionId) => {
+    const { transactions } = this.props
+    
+    const txIndex = transactions.findIndex((tx) => tx.id === transactionId)
+    const txToUpdate = transactions[txIndex]
+    const incrementedTx = { ...txToUpdate, amount: txToUpdate.amount + 10 }
+    const newTransactions = [...transactions]
+    newTransactions[txIndex] = incrementedTx
+    this.props.dispatch(actions.incrementAmount(newTransactions));
+  }
+
   render() {
     const { expandedTransactionIds } = this.props
 
     const callbacks = {
+      onIncrementAmount: this.incrementAmount,
       toggleCardExpanded: this.toggleCardExpanded
     }
 
@@ -54,6 +67,7 @@ class HomeScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    transactions: getFilteredTransactions(state),
     expandedTransactionIds: state.expandedTransactionIds.listIds
   }
 }

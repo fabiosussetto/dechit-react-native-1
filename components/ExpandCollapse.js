@@ -20,4 +20,4 @@ const styles = StyleSheet.create({
     description: {
         marginVertical: 5
     }
-  });
+});

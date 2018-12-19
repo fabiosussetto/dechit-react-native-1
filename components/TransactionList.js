@@ -21,7 +21,8 @@ class TransactionList extends React.Component {
             <TransactionCard 
               onToggleExpand={() => callbacks.toggleCardExpanded(transaction) }
               expanded={this.isCardExpanded(transaction)}
-              transaction={transaction} 
+              transaction={transaction}
+              onIncrementAmount={callbacks.onIncrementAmount.bind(this, transaction.id)}
               key={transaction.id} 
             />
           ))

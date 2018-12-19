@@ -8,25 +8,29 @@ import {Button} from 'react-native-elements';
 import ExpandCollapse from './ExpandCollapse';
 
 const TransactionCard = (props) => {
-    const { transaction, expanded, onToggleExpand } = props
+    const { transaction, onIncrementAmount, expanded, onToggleExpand } = props
 
     return (
         <View style={styles.listItem}>
             <View style={styles.flex}>
                 <View>
                     <Text>{transaction.category}</Text>
+                    <Text>Amount: {transaction.amount}</Text>
                 </View>
                 <View style={styles.buttonPosition}>
                     <Button
+                        onPress={onIncrementAmount}
+                        title="Add 10"
+                        buttonStyle={styles.buttonAdd}
+                    />
+                    <Button
                         onPress={onToggleExpand}
                         title={expanded ? 'Collapse' : 'Expand'}
-                        buttonStyle={styles.button}
+                        buttonStyle={styles.buttonExpand}
                     />
                 </View>
             </View>
-            <View style={styles.amount}>
-                <Text>Amount: {transaction.amount}</Text>
-            </View>
+            
             {expanded && <ExpandCollapse transaction={transaction} />}
         </View>
     )
@@ -45,8 +49,17 @@ const styles = StyleSheet.create({
     amount: {
         marginVertical: 5
     },
-    button: {
-        width: '100%'
+    buttonExpand: {
+        width: 80,
+        height: 5,
+        backgroundColor: '#6c757d',
+        marginVertical: 5
+    },
+    buttonAdd: {
+        width: 80,
+        height: 5,
+        backgroundColor: '#1e7e34',
+        marginVertical: 5
     },
     buttonPosition: {
         marginLeft: 'auto'
