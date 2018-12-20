@@ -2,25 +2,37 @@ import React from 'react'
 import {
   View,
   StyleSheet,
-  Text
+  Text,
+  TouchableHighlight
 } from 'react-native';
 import NumericInput from 'react-native-numeric-input'
-import {Button} from 'react-native-elements';
+import {Button, FormLabel} from 'react-native-elements';
 import { connect } from "react-redux";
 import { setFilterAmount } from '../state/actions';
 
+const shortcuts = [
+  { label: 'Cheap', maxAmount: 10 },
+  { label: 'Average', maxAmount: 30 },
+  { label: 'Expensive', maxAmount: 9999 }
+]
+
 class TransactionFilter extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      amount: 0
-    }
+  state = {
+    amount: 0
   }
 
   onSubmit = (event) => {
     event.preventDefault();
     this.props.dispatch(setFilterAmount(this.state.amount));
+  }
+
+  applyShortcut = (shortcut) => {
+    this.setState({
+        amount: shortcut.maxAmount
+    }, () => {
+      this.props.dispatch(setFilterAmount(this.state.amount));
+    })
   }
 
   onAmountChange = (value) => {
@@ -42,12 +54,24 @@ class TransactionFilter extends React.Component {
         <View style={styles.mleft20}>
           <Text style={styles.h2}>My Bank Account</Text>
         </View>
-        <View style={styles.mleft20}>
+        <View style={styles.flex}>
+          <FormLabel>Amount: </FormLabel>
           <NumericInput
             value={this.state.amount}
             onChange={this.onAmountChange}
             type='plus-minus'
           />
+        </View>
+        <View style={styles.flex}>
+          {shortcuts.map(shortcut => (
+            <TouchableHighlight 
+              key={shortcut.label}
+              onPress={() => this.applyShortcut(shortcut)}
+              style={styles.badge}
+            >
+              <Text style={styles.color}>{shortcut.label}</Text>
+            </TouchableHighlight>
+          ))}
         </View>
         <View style={styles.flex}>
           <Button
@@ -119,5 +143,15 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     marginTop: 10
+  },
+  badge: {
+    marginLeft: 15,
+    marginRight: 5,
+    backgroundColor: '#6c757d',
+    paddingHorizontal: 5,
+    borderRadius: 15,
+  },
+  color: {
+    color: '#fff'
   }
 });
