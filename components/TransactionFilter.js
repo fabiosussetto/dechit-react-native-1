@@ -57,7 +57,8 @@ class TransactionFilter extends React.Component {
         <View style={styles.flex}>
           <FormLabel>Amount: </FormLabel>
           <NumericInput
-            value={this.state.amount}
+            initValue={this.state.amount}
+            //value={this.state.amount} mostra a video sempre lo zero
             onChange={this.onAmountChange}
             type='plus-minus'
           />
