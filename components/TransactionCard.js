@@ -3,7 +3,7 @@ import {
     Text,
     View,
     StyleSheet
-  } from 'react-native';
+} from 'react-native';
 import {Button, Card} from 'react-native-elements';
 import ExpandCollapse from './ExpandCollapse';
 

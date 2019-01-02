@@ -51,9 +51,6 @@ class TransactionFilter extends React.Component {
     const {callbacks, expandedIds, transactions} = this.props
     return (
       <View style={styles.listItem}>
-        <View style={styles.mleft20}>
-          <Text style={styles.h2}>My Bank Account</Text>
-        </View>
         <View style={styles.flex}>
           <FormLabel>Amount: </FormLabel>
           <NumericInput
@@ -63,7 +60,7 @@ class TransactionFilter extends React.Component {
             type='plus-minus'
           />
         </View>
-        <View style={styles.flex}>
+        <View style={[styles.flex, styles.mtop10]}>
           {shortcuts.map(shortcut => (
             <TouchableHighlight 
               key={shortcut.label}
@@ -74,7 +71,7 @@ class TransactionFilter extends React.Component {
             </TouchableHighlight>
           ))}
         </View>
-        <View style={styles.flex}>
+        <View style={[styles.flex, styles.mtop10]}>
           <Button
             onPress={this.onSubmit}
             title="Filter"
@@ -92,7 +89,7 @@ class TransactionFilter extends React.Component {
               buttonStyle={styles.buttonExpandAll}
             />
           </View>
-        </View> 
+        </View>
       </View>
     )
   }
@@ -127,12 +124,6 @@ const styles = StyleSheet.create({
   mleftauto: {
     marginLeft: 'auto'
   },
-  mleft20: {
-    marginLeft: 15
-  },
-  h2: {
-    fontSize: 20
-  },
   card: {
     borderWidth: 1,
     width: 100,
@@ -142,7 +133,9 @@ const styles = StyleSheet.create({
   },
   flex: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'row'
+  },
+  mtop10: {
     marginTop: 10
   },
   badge: {

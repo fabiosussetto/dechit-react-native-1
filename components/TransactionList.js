@@ -2,7 +2,7 @@ import React from 'react';
 import {
     View,
     StyleSheet
-  } from 'react-native';
+} from 'react-native';
 import {Button} from 'react-native-elements';
 import * as actions from '../state/actions';
 import { getFilteredTransactions } from '../state/selectors';

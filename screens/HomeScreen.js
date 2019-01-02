@@ -13,7 +13,7 @@ import { getFilteredTransactions } from '../state/selectors';
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
-    header: null,
+    title: 'My Bank Account',
   };
 
   componentDidMount() {
@@ -116,7 +116,6 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    paddingTop: 30,
     backgroundColor: '#fff',
   },  
   contentContainer: {
