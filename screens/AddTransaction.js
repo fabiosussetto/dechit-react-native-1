@@ -17,32 +17,45 @@ class AddTransaction extends Component {
             amount: 0,
             description: ''
         }
-        /*this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);*/
+        this.handleCategoryChange = this.handleCategoryChange.bind(this);
+        this.handleAmountChange = this.handleAmountChange.bind(this);
+        this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     
     static navigationOptions = {
         title: 'Add New Transaction',
     };
 
-    /* handleChange = (event) => {
+    handleCategoryChange = (value) => {
+        console.log(value)
         this.setState({
-            [event.target.name]: event.target.value
-        });
-    } */
+          category: value
+        })
+    }
 
-    onAmountChange = (value) => {
+    handleAmountChange = (value) => {
+        console.log(value)
         this.setState({
           amount: value
         })
     }
 
+    handleDescriptionChange = (value) => {
+        console.log('dio porco')
+        console.log(value)
+        this.setState({
+          description: value
+        })
+    }
+
     handleSubmit = () => {
+        console.log('ciao')
         this.resetForm();
         const newTransaction = this.state;
         const {transactions} = this.props;
         newTransaction.id = transactions.length+1;
-        this.props.dispatch(addTransactionFromForm(newTransaction));
+        this.props.dispatch(addTransactionFromForm(newTransaction)); 
     }
 
     resetForm = () => {
@@ -60,23 +73,24 @@ class AddTransaction extends Component {
                 <Form>
                     <Item floatingLabel>
                         <Label>Category</Label>
-                        <Input />
+                        <Input onChangeText={this.handleCategoryChange} />
                     </Item>
                     <Item fixedLabel>
                         <Label>Amount</Label>
                         <NumericInput 
                             initValue={this.state.amount}
-                            onChange={this.onAmountChange}
+                            onChange={this.handleAmountChange}
                         />
                     </Item>
                     <Item floatingLabel>
                         <Label>Description</Label>
-                        <Textarea rowSpan={5} />
+                        <Textarea rowSpan={5} value={this.state.description} onChangeText={this.handleDescriptionChange} />
                     </Item>
                     <Item last>
                         <Button
-                            onPress={this.onSubmit}
+                            onPress={this.handleSubmit}
                             title="Send"
+                            containerViewStyle={styles.buttonContainer}
                             buttonStyle={styles.buttonSend}
                         />
                     </Item>
@@ -95,11 +109,13 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps)(AddTransaction);
 
 const styles = StyleSheet.create({
+    buttonContainer: {
+        width: '100%',
+    },
     buttonSend: {
-      width: '100%',
-      backgroundColor: '#007bff',
-      margin: 20,
-      justifyContent: 'center',
-      alignContent: 'center'
+        backgroundColor: '#007bff',
+        marginRight: 40,
+        marginTop: 20,
+        marginBottom: 20
     }
-  });
+});

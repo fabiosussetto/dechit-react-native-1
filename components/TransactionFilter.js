@@ -22,8 +22,7 @@ class TransactionFilter extends React.Component {
     amount: 0
   }
 
-  onSubmit = (event) => {
-    event.preventDefault();
+  onSubmit = () => {
     this.props.dispatch(setFilterAmount(this.state.amount));
   }
 
