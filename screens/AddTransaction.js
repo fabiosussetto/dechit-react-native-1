@@ -1,26 +1,29 @@
 import React, { Component } from 'react'
 import { StyleSheet } from 'react-native';
-import { Container, Textarea, Form, Item, Input, Label } from 'native-base';
+import { Container, Content, Textarea, Toast, Text, Form, Item, Input, Label, Button } from 'native-base';
 import NumericInput from 'react-native-numeric-input'
-import { Button } from 'react-native-elements';
 import { connect } from "react-redux";
-import {addTransactionFromForm} from '../state/actions';
+import { addTransactionFromForm } from '../state/actions';
 import { getFilteredTransactions } from '../state/selectors';
+import * as Expo from 'expo';
 
 class AddTransaction extends Component {
-    constructor(props) {
-        super(props);
 
-        this.state = {
-            id: 0,
-            category: '',
-            amount: 0,
-            description: ''
-        }
-        this.handleCategoryChange = this.handleCategoryChange.bind(this);
-        this.handleAmountChange = this.handleAmountChange.bind(this);
-        this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+    state = {
+        id: 0,
+        category: '',
+        amount: 0,
+        description: '',
+        showToast: false,
+        isReady: false
+    }
+
+    async componentWillMount() {
+        await Expo.Font.loadAsync({
+          'Roboto': require('../node_modules/native-base/Fonts/Roboto.ttf'),
+          'Roboto_medium': require('../node_modules/native-base/Fonts/Roboto_medium.ttf'),
+        });
+        this.setState({isReady:true})
     }
     
     static navigationOptions = {
@@ -37,7 +40,7 @@ class AddTransaction extends Component {
     handleAmountChange = (value) => {
         console.log(value)
         this.setState({
-          amount: value
+            amount: value
         })
     }
 
@@ -45,12 +48,18 @@ class AddTransaction extends Component {
         console.log('dio porco')
         console.log(value)
         this.setState({
-          description: value
+            description: value
         })
     }
 
     handleSubmit = () => {
         console.log('ciao')
+        Toast.show({
+            text: 'Transaction successfully saved!',
+            buttonText: 'Close',
+            duration: 3000,
+            position: 'top'
+        })
         this.resetForm();
         const newTransaction = this.state;
         const {transactions} = this.props;
@@ -63,38 +72,50 @@ class AddTransaction extends Component {
             id: 0,
             category: '',
             amount: 0,
-            description: ''
+            description: '',
         })
     }
 
     render() {
+        if (!this.state.isReady) {
+            return <Expo.AppLoading />;
+        }
         return (
             <Container>
-                <Form>
-                    <Item floatingLabel>
-                        <Label>Category</Label>
-                        <Input onChangeText={this.handleCategoryChange} />
-                    </Item>
-                    <Item fixedLabel>
-                        <Label>Amount</Label>
-                        <NumericInput 
-                            initValue={this.state.amount}
-                            onChange={this.handleAmountChange}
-                        />
-                    </Item>
-                    <Item floatingLabel>
-                        <Label>Description</Label>
-                        <Textarea rowSpan={5} value={this.state.description} onChangeText={this.handleDescriptionChange} />
-                    </Item>
-                    <Item last>
-                        <Button
-                            onPress={this.handleSubmit}
-                            title="Send"
-                            containerViewStyle={styles.buttonContainer}
-                            buttonStyle={styles.buttonSend}
-                        />
-                    </Item>
-                </Form>
+                <Content>
+                    <Form>
+                        <Item floatingLabel>
+                            <Label>Category</Label>
+                            <Input value={this.state.category} onChangeText={this.handleCategoryChange} />
+                        </Item>
+                        <Item fixedLabel>
+                            <Label>Amount</Label>
+                            <NumericInput 
+                                initValue={this.state.amount}
+                                onChange={this.handleAmountChange}
+                            />
+                        </Item>
+                        <Item floatingLabel>
+                            <Label>Description</Label>
+                            <Textarea rowSpan={5} value={this.state.description} onChangeText={this.handleDescriptionChange} />
+                        </Item>
+                        <Item padder last>
+                            {/* <Button
+                                onPress={this.handleSubmit}
+                                title="Send"
+                                containerViewStyle={styles.buttonContainer}
+                                buttonStyle={styles.buttonSend}
+                            /> */}
+                            <Button full
+                                onPress={this.handleSubmit}
+                                //containerViewStyle={styles.buttonContainer}
+                                //buttonStyle={styles.buttonSend}
+                            >
+                                <Text>Send</Text>
+                            </Button>
+                        </Item>
+                    </Form>
+                </Content>
             </Container>
         )
     }
@@ -113,7 +134,7 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     buttonSend: {
-        backgroundColor: '#007bff',
+        //backgroundColor: '#007bff',
         marginRight: 40,
         marginTop: 20,
         marginBottom: 20

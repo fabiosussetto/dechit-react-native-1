@@ -1,5 +1,6 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet } from 'react-native';
+import { Root } from "native-base";
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import { Provider } from "react-redux";
 import AppNavigator from './navigation/AppNavigator';
@@ -21,12 +22,13 @@ export default class App extends React.Component {
         />
       );
     } else {
+      {/* ho sostituito il componente View di react-native, con Root di native-base, altrimenti il componente toast non funzionava */}
       return (
         <Provider store={store}>
-          <View style={styles.container}>
+          <Root style={styles.container}>
             {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
             <AppNavigator />
-          </View>
+          </Root>
         </Provider>
       );
     }
@@ -43,7 +45,7 @@ export default class App extends React.Component {
         ...Icon.Ionicons.font,
         // We include SpaceMono because we use it in HomeScreen.js. Feel free
         // to remove this if you are not using it in your app
-        'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
+        'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf')
       }),
     ]);
   };
