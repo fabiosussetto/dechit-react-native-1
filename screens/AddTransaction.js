@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet } from 'react-native';
-import { Container, Content, Textarea, Toast, Text, Form, Item, Input, Label, Button } from 'native-base';
+import { Container, Content, Toast, Text, Form, Item, Input, Label, Button } from 'native-base';
 import NumericInput from 'react-native-numeric-input'
 import { connect } from "react-redux";
 import { addTransactionFromForm } from '../state/actions';
@@ -14,10 +14,11 @@ class AddTransaction extends Component {
         category: '',
         amount: 0,
         description: '',
-        showToast: false,
         isReady: false
     }
 
+    /* Ho dovuto aggiungere manualmente il percorso di questo font, 
+    altrimenti andava in errore quello che scrivevo nel componente Text della libreria native-base */
     async componentWillMount() {
         await Expo.Font.loadAsync({
           'Roboto': require('../node_modules/native-base/Fonts/Roboto.ttf'),
@@ -31,29 +32,24 @@ class AddTransaction extends Component {
     };
 
     handleCategoryChange = (value) => {
-        console.log(value)
         this.setState({
           category: value
         })
     }
 
     handleAmountChange = (value) => {
-        console.log(value)
         this.setState({
             amount: value
         })
     }
 
     handleDescriptionChange = (value) => {
-        console.log('dio porco')
-        console.log(value)
         this.setState({
             description: value
         })
     }
 
     handleSubmit = () => {
-        console.log('ciao')
         Toast.show({
             text: 'Transaction successfully saved!',
             buttonText: 'Close',
@@ -73,7 +69,7 @@ class AddTransaction extends Component {
             category: '',
             amount: 0,
             description: '',
-        })
+        });
     }
 
     render() {
@@ -84,7 +80,7 @@ class AddTransaction extends Component {
             <Container>
                 <Content>
                     <Form>
-                        <Item floatingLabel>
+                        <Item>
                             <Label>Category</Label>
                             <Input value={this.state.category} onChangeText={this.handleCategoryChange} />
                         </Item>
@@ -95,21 +91,14 @@ class AddTransaction extends Component {
                                 onChange={this.handleAmountChange}
                             />
                         </Item>
-                        <Item floatingLabel>
+                        <Item>
                             <Label>Description</Label>
-                            <Textarea rowSpan={5} value={this.state.description} onChangeText={this.handleDescriptionChange} />
+                            <Input multiline={true} numberOfLines={5} value={this.state.description} onChangeText={this.handleDescriptionChange} />
                         </Item>
-                        <Item padder last>
-                            {/* <Button
+                        <Item last>
+                            <Button
                                 onPress={this.handleSubmit}
-                                title="Send"
-                                containerViewStyle={styles.buttonContainer}
-                                buttonStyle={styles.buttonSend}
-                            /> */}
-                            <Button full
-                                onPress={this.handleSubmit}
-                                //containerViewStyle={styles.buttonContainer}
-                                //buttonStyle={styles.buttonSend}
+                                style={styles.buttonSend}
                             >
                                 <Text>Send</Text>
                             </Button>
@@ -130,11 +119,8 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps)(AddTransaction);
 
 const styles = StyleSheet.create({
-    buttonContainer: {
-        width: '100%',
-    },
     buttonSend: {
-        //backgroundColor: '#007bff',
+        backgroundColor: '#007bff',
         marginRight: 40,
         marginTop: 20,
         marginBottom: 20
